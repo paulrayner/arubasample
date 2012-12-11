@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+$: << File.expand_path("../lib/", __FILE__)
+require 'thor'
+
+class Login < Thor
+
+	include Thor::Actions
+
+	desc "rename", "Renames files in current folder from one extension to another"
+	def type
+	  find_type = ask("Enter the original file type extension:")
+	  say(find_type, :green)
+
+	  replace_type = ask("Enter the new file type:")
+	  say(replace_type, :green)
+	end
+end
+
+puts "hi"
+Login.start
+

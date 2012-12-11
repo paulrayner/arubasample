@@ -13,6 +13,13 @@ Feature: Test script using Aruba
   Scenario: Default script output is correct
     When I run `bulkrename`
     Then the exit status should be 0
+    And the output should contain "Tasks"
+    And the output should contain:
+    """
+    Tasks:
+  	   bulkrename help [TASK]    # Describe available tasks or one specific task
+  	   bulkrename rename FOLDER  # Rename file extensions in designated folder
+"""
     And the banner should be present
     And the banner should document that this app takes no options
     And the banner should document that this app's arguments are:

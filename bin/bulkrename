@@ -24,9 +24,9 @@ end
 
 def rename_file(rename_info, file_name)
   old_name = "#{rename_info.folder}/#{file_name}"
-  new_file = replace_ending(rename_info, file_name)
-  new_name = "#{rename_info.folder}/#{new_file}" 
+  new_name = "#{rename_info.folder}/" + replace_ending(rename_info, file_name)
 	puts "Renaming #{old_name} to #{new_name}"
+
 	abort("Error: Cannot overwrite file '#{new_name}'") if (File.exists?(new_name))
 	File.rename(old_name, new_name)
 end
@@ -55,6 +55,9 @@ end
 folder = ARGV[0]
 find_type = ARGV[1]
 replace_type = ARGV[2]
+
+abort("Error: <find_extension> is required") if not find_type 
+abort("Error: <replace_extension> is required") if not replace_type
 
 rename_info = RenameInfo.new(folder, find_type, replace_type)
 

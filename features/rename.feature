@@ -18,8 +18,32 @@ Feature: Test script using Aruba
     """
     USAGE: bulkrename <folder name> <find_extension> <replace_extension>
     """
-    
+
+  Scenario: Must include extension to find
+    When I run `bulkrename photos`
+    Then the exit status should be 1
+    And the output should contain:
+    """
+    Error: <find_extension> is required
+    """
+
   @wip
+  Scenario: Must include new replacement extension
+    When I run `bulkrename photos jpeg`
+    Then the exit status should be 1
+    And the output should contain:
+    """
+    Error: <replace_extension> is required
+    """
+    
+  Scenario: Must not allow too many arguments
+    When I run `bulkrename photos jpeg jpg extra`
+    Then the exit status should be 1
+    And the output should contain:
+    """
+    Error: Too many arguments
+    """
+    
   Scenario: Renaming works correctly
     When I run `bulkrename photos jpeg jpg`
     Then the output should contain:

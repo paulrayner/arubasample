@@ -75,7 +75,7 @@ Feature: Test script using Aruba
       | photos/c.jpg |
       | photos/d.jpg |
 
-# Refactorings:
+# Potential Refactorings:
 #
 # * add output messages displaying which files were renamed
 # * Handle missing folder

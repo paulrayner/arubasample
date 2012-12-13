@@ -63,9 +63,7 @@ def get_rename_info(arguments)
   replace_type = arguments[2]
   if arguments[3]
     option = arguments[3] 
-    puts "option: " + option
-    # Add logic here for not option switch
-    abort "Error: Not valid option" if not option[1, 2] == "--"
+    abort "Error: Not valid option" if not option[0..1] == "--"
     overwrite = true if option == "--overwrite"
     askoverwrite = true if option == "--askoverwrite"
   end

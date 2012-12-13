@@ -95,6 +95,10 @@ Feature: Test script using Aruba
       | photos/b.jpg |
       | photos/c.jpg |
       | photos/d.jpg |
+    And the output should not contain:
+    """
+    Error: Cannot overwrite file 'photos/d.jpg'
+    """
 
 
   # Need to change this to interactive mode when it finds the file

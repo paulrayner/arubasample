@@ -1,4 +1,4 @@
-#@announce
+@announce
 Feature: Test script using Aruba
   In order to develop some kind of command line script using Aruba
   As a newcomer to Aruba
@@ -35,8 +35,16 @@ Feature: Test script using Aruba
     Error: <replace_extension> is required
     """
     
-  Scenario: Must not allow too many arguments
+  Scenario: Invalid option syntax
     When I run `bulkrename photos jpeg jpg extra`
+    Then the exit status should be 1
+    And the output should contain:
+    """
+    Error: Not valid option
+    """
+
+  Scenario: Must not allow too many arguments
+    When I run `bulkrename photos jpeg jpg --option extra`
     Then the exit status should be 1
     And the output should contain:
     """
@@ -93,7 +101,7 @@ Feature: Test script using Aruba
   @ignore
   Scenario: Provide option to decide whether to overwrite existing file(s)
     Given an empty file named "photos/d.jpeg"
-    When I run `bulkrename -q photos jpeg jpg`
+    When I run `bulkrename photos jpeg jpg --askoverwrite`
     Then the following files should exist:
       | photos/a.jpg |
       | photos/b.jpg |

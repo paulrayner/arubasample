@@ -4,29 +4,21 @@ require 'main'
 
 ARGV.replace %w( --help ) if ARGV.empty?
 
-    Main {
-      argument ('folder') {
-        required
-        description 'The source folder where the files are located'
-      }
+Main {
+  argument('folder'){
+    description 'The source folder where the files are located'
+  }
 
-      argument ('old') { 
-        description 'The current file extension (eg. jpeg)'
-      }
+  keyword('old'){
+    required
+    description 'old file extension'
+  }
 
-      argument ('new') { 
-        required
-        description 'The new file extension (eg. jpeg)'
-      }
 
-      option 'overwrite'
-      option 'prompt'
-      option 'copy'
-
-      def run
-      	abort("Error: <find_extension> is required") if not #{params:old}
-
- 		puts "to_options: #{params.to_options.inspect}" 
-        exit_success!
-      end
-    }
+  def run
+    p params['folder'].given?
+    p params['folder'].values
+    p params['old'].given?
+    p params['old'].values
+  end
+}

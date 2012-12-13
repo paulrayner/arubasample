@@ -11,7 +11,6 @@ ARGV.replace %w( --help ) if ARGV.empty?
       }
 
       argument ('old') { 
-        required
         description 'The current file extension (eg. jpeg)'
       }
 
@@ -25,7 +24,7 @@ ARGV.replace %w( --help ) if ARGV.empty?
       option 'copy'
 
       def run
-      	abort("Error: <find_extension> is required") if not params:old
+      	abort("Error: <find_extension> is required") if not #{params:old}
 
  		puts "to_options: #{params.to_options.inspect}" 
         exit_success!

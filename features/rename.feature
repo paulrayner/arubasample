@@ -1,4 +1,4 @@
-@announce
+#@announce
 Feature: Test script using Aruba
   In order to develop some kind of command line script using Aruba
   As a newcomer to Aruba
@@ -78,7 +78,7 @@ Feature: Test script using Aruba
     """
 
   # Need better way to test that the overwrite actually happened
-  @wip
+  @ignore
   Scenario: Provide option to overwrite existing file(s)
     Given an empty file named "photos/d.jpeg"
     When I run `bulkrename photos jpeg jpg --overwrite`
@@ -90,6 +90,7 @@ Feature: Test script using Aruba
 
 
   # Need to change this to interactive mode when it finds the file
+  @ignore
   Scenario: Provide option to decide whether to overwrite existing file(s)
     Given an empty file named "photos/d.jpeg"
     When I run `bulkrename -q photos jpeg jpg`

@@ -1,16 +1,37 @@
 #!/usr/bin/env ruby
 $: << File.expand_path("../lib/", __FILE__)
-require 'thor'
 
-class Test < Thor
-  desc "rename FOLDER", "Rename file extensions in designated folder"
-  method_option :folder, :aliases => "-f", :default => nil, :desc => "Path to folder to containing files to rename"
-  method_option :find_type, :aliases => "-x", :default => nil, :desc => "Extension to rename for matching files"
-  method_option :replace_type, :aliases => "-r", :default => nil, :desc => "New file extension"
-  def example
-    puts "I'm a thor task!"
-  end
-
+def file_type( file_name )
+  File.extname( file_name ).gsub( /^\./, '' ).downcase 
 end
 
-Test.start
+def file_with_path (path, file_name)
+  path + "/" + file_name
+end
+if(ARGV.size == 0) then
+    puts 'USAGE: bulkrename <folder name> <find_extension> <replace_extension>'
+    exit
+end
+
+folder = ARGV[0]
+find_type = ARGV[1]
+replace_type = ARGV[2]
+abort("Error: Missing folder '" + folder + "'") unless File.exists?(folder)
+
+puts "Loading file names from folder: #{folder}"
+puts "Replacing file type #{find_type} with #{replace_type}"
+
+
+Dir.foreach(folder) do |file_name|
+ type = file_type(file_name)
+ if(type == find_type.downcase)
+   base_name = File.basename(file_name, "." + find_type)
+   old_name = file_with_path(folder, file_name)
+   new_name = file_with_path(folder, base_name) + "." + replace_type
+   puts "Renaming #{old_name} to #{new_name}"
+   if (File.exists?(new_name))
+     abort("Error: Cannot overwrite '" + new_name + "'")
+   end
+   File.rename(old_name, new_name)
+ end
+end

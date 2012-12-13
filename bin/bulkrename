@@ -17,14 +17,17 @@ def file_type(file_name)
   File.extname(file_name).gsub(/^\./, '').downcase 
 end
 
+def replace_ending(rename_info, file_name)
+  base_name = File.basename(file_name, ".#{rename_info.find_type}")
+  return "#{base_name}.#{rename_info.replace_type}"
+end
+
 def rename_file(rename_info, file_name)
-	base_name = File.basename(file_name, "." + rename_info.find_type)
-	old_name = "#{rename_info.folder}/#{file_name}"
-	new_name = "#{rename_info.folder}/#{base_name}.#{rename_info.replace_type}"
+  old_name = "#{rename_info.folder}/#{file_name}"
+  new_file = replace_ending(rename_info, file_name)
+  new_name = "#{rename_info.folder}/#{new_file}" 
 	puts "Renaming #{old_name} to #{new_name}"
-	if (File.exists?(new_name))
-	 abort("Error: Cannot overwrite file '#{new_name}'")
-	end
+	abort("Error: Cannot overwrite file '#{new_name}'") if (File.exists?(new_name))
 	File.rename(old_name, new_name)
 end
 

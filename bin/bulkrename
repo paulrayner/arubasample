@@ -51,6 +51,7 @@ if(ARGV.size == 0) then
     puts 'USAGE: bulkrename <folder name> <find_extension> <replace_extension>'
     exit
 end
+abort 'Error: Too many arguments' if(ARGV.size > 3)
 
 folder = ARGV[0]
 find_type = ARGV[1]

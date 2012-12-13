@@ -27,7 +27,6 @@ Feature: Test script using Aruba
     Error: <find_extension> is required
     """
 
-  @wip
   Scenario: Must include new replacement extension
     When I run `bulkrename photos jpeg`
     Then the exit status should be 1
@@ -36,6 +35,7 @@ Feature: Test script using Aruba
     Error: <replace_extension> is required
     """
     
+  @wip
   Scenario: Must not allow too many arguments
     When I run `bulkrename photos jpeg jpg extra`
     Then the exit status should be 1

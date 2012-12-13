@@ -31,7 +31,7 @@ def rename_file(rename_info, file_name)
   new_name = "#{rename_info.folder}/" + replace_ending(rename_info, file_name)
 	puts "Renaming #{old_name} to #{new_name}"
 
-	abort("Error: Cannot overwrite file '#{new_name}'") if (File.exists?(new_name))
+	abort("Error: Cannot overwrite file '#{new_name}'") if File.exists?(new_name) && rename_info.overwrite != true
 	File.rename(old_name, new_name)
 end
 
@@ -64,6 +64,7 @@ def get_rename_info(arguments)
   if arguments[3]
     option = arguments[3] 
     abort "Error: Not valid option" if not option[0..1] == "--"
+    overwrite = false
     overwrite = true if option == "--overwrite"
     askoverwrite = true if option == "--askoverwrite"
   end

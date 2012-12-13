@@ -1,4 +1,3 @@
-@announce
 Feature: Test script using Aruba
   In order to develop some kind of command line script using Aruba
   As a newcomer to Aruba
@@ -85,7 +84,6 @@ Feature: Test script using Aruba
     Error: Cannot overwrite file 'photos/d.jpg'
     """
 
-  # Need better way to test that the overwrite actually happened
   @ignore
   Scenario: Provide option to overwrite existing file(s)
     Given an empty file named "photos/d.jpeg"
@@ -111,7 +109,10 @@ Feature: Test script using Aruba
       | photos/b.jpg |
       | photos/c.jpg |
       | photos/d.jpg |
-
+    And the output should not contain:
+    """
+    Error: Cannot overwrite file 'photos/d.jpg'
+    """
 # Potential Refactorings:
 #
 # * add output messages displaying which files were renamed

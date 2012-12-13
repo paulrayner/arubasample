@@ -1,36 +1,50 @@
 #!/usr/bin/env ruby
 $: << File.expand_path("../lib/", __FILE__)
 
-def file_type( file_name )
-  File.extname( file_name ).gsub( /^\./, '' ).downcase 
+class RenameInfo
+  attr_reader :folder
+  attr_reader :find_type
+  attr_reader :replace_type
+
+  def initialize(folder, find_type, replace_type)
+    @folder = folder
+    @find_type = find_type
+    @replace_type = replace_type
+  end
 end
 
-def file_with_path (path, file_name)
+def file_type(file_name)
+  File.extname(file_name).gsub(/^\./, '').downcase 
+end
+
+def file_with_path(path, file_name)
   path + "/" + file_name
 end
 
-def rename_file (folder, find_type, replace_type, file_name)
-	 type = file_type(file_name)
-	 if(type == find_type.downcase)
-	   base_name = File.basename(file_name, "." + find_type)
-	   old_name = file_with_path(folder, file_name)
-	   new_name = file_with_path(folder, base_name) + "." + replace_type
-	   puts "Renaming #{old_name} to #{new_name}"
-	   if (File.exists?(new_name))
-	     abort("Error: Cannot overwrite file '#{new_name}'")
-	   end
-	   File.rename(old_name, new_name)
-	 end
+def rename_file(rename_info, file_name)
+	base_name = File.basename(file_name, "." + rename_info.find_type)
+	old_name = file_with_path(rename_info.folder, file_name)
+	new_name = file_with_path(rename_info.folder, base_name) + "." + rename_info.replace_type
+	puts "Renaming #{old_name} to #{new_name}"
+	if (File.exists?(new_name))
+	 abort("Error: Cannot overwrite file '#{new_name}'")
+	end
+	File.rename(old_name, new_name)
 end
 
-def bulk_rename (folder, find_type, replace_type)
-	abort("Error: Folder '#{folder}' does not exist") unless File.exists?(folder)
+def display_messages(rename_info)
+	abort("Error: Folder '#{rename_info.folder}' does not exist") unless File.exists?(rename_info.folder)
 
-	puts "Loading file names from folder: #{folder}"
-	puts "Replacing file type #{find_type} with #{replace_type}"
+	puts "Loading file names from folder: #{rename_info.folder}"
+	puts "Replacing file type #{rename_info.find_type} with #{rename_info.replace_type}"
+end
 
-	Dir.foreach(folder) do |file_name|
-		rename_file(folder, find_type, replace_type, file_name)
+def bulk_rename(rename_info)
+	display_messages(rename_info)
+	Dir.foreach(rename_info.folder) do |file_name|
+    if file_type(file_name) == rename_info.find_type.downcase
+		  rename_file(rename_info, file_name)
+    end
 	end
 end
 
@@ -43,4 +57,6 @@ folder = ARGV[0]
 find_type = ARGV[1]
 replace_type = ARGV[2]
 
-bulk_rename(folder, find_type, replace_type)
+rename_info = RenameInfo.new(folder, find_type, replace_type)
+
+bulk_rename(rename_info)

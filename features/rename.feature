@@ -55,6 +55,7 @@ Feature: Test script using Aruba
     """
 
   # Need better way to test that the overwrite actually happened
+  @ignore
   Scenario: Provide option to overwrite existing file(s)
     Given an empty file named "photos/d.jpeg"
     When I run `bulkrename -o photos jpeg jpg`
@@ -66,6 +67,7 @@ Feature: Test script using Aruba
 
 
   # Need to change this to interactive mode when it finds the file
+  @ignore
   Scenario: Provide option to decide whether to overwrite existing file(s)
     Given an empty file named "photos/d.jpeg"
     When I run `bulkrename -q photos jpeg jpg`

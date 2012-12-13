@@ -25,6 +25,8 @@ ARGV.replace %w( --help ) if ARGV.empty?
       option 'copy'
 
       def run
+      	abort("Error: <find_extension> is required") if not params:old
+
  		puts "to_options: #{params.to_options.inspect}" 
         exit_success!
       end

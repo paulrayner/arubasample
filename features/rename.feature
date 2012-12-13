@@ -35,7 +35,6 @@ Feature: Test script using Aruba
     Error: <replace_extension> is required
     """
     
-  @wip
   Scenario: Must not allow too many arguments
     When I run `bulkrename photos jpeg jpg extra`
     Then the exit status should be 1
@@ -79,10 +78,10 @@ Feature: Test script using Aruba
     """
 
   # Need better way to test that the overwrite actually happened
-  @ignore
+  @wip
   Scenario: Provide option to overwrite existing file(s)
     Given an empty file named "photos/d.jpeg"
-    When I run `bulkrename -o photos jpeg jpg`
+    When I run `bulkrename photos jpeg jpg --overwrite`
     Then the following files should exist:
       | photos/a.jpg |
       | photos/b.jpg |
@@ -91,7 +90,6 @@ Feature: Test script using Aruba
 
 
   # Need to change this to interactive mode when it finds the file
-  @ignore
   Scenario: Provide option to decide whether to overwrite existing file(s)
     Given an empty file named "photos/d.jpeg"
     When I run `bulkrename -q photos jpeg jpg`

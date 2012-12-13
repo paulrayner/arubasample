@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+$: << File.expand_path("../lib/", __FILE__)
+require 'main'
+
+ARGV.replace %w( --help ) if ARGV.empty?
+
+    Main {
+      argument ('folder') {
+        required
+        description 'The source folder where the files are located'
+      }
+
+      argument ('old') { 
+        required
+        description 'The current file extension (eg. jpeg)'
+      }
+
+      argument ('new') { 
+        required
+        description 'The new file extension (eg. jpeg)'
+      }
+
+      option 'overwrite'
+      option 'prompt'
+      option 'copy'
+
+      def run
+ 		puts "to_options: #{params.to_options.inspect}" 
+        exit_success!
+      end
+    }

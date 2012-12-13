@@ -50,11 +50,6 @@ Feature: Test script using Aruba
     Then the exit status should be 1
     And the output should contain:
     """
-    Loading file names from folder: photos
-    Replacing file type jpeg with jpg
-    Renaming photos/a.jpeg to photos/a.jpg
-    Renaming photos/b.jpeg to photos/b.jpg
-    Renaming photos/c.jpeg to photos/c.jpg
     Renaming photos/d.jpeg to photos/d.jpg
     Error: Cannot overwrite 'photos/d.jpg'
     """

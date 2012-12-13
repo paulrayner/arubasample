@@ -2,15 +2,15 @@
 $: << File.expand_path("../lib/", __FILE__)
 require 'thor'
 
-class Test < Thor
-  desc "rename FOLDER", "Rename file extensions in designated folder"
-  method_option :folder, :aliases => "-f", :default => nil, :desc => "Path to folder to containing files to rename"
-  method_option :find_type, :aliases => "-x", :default => nil, :desc => "Extension to rename for matching files"
-  method_option :replace_type, :aliases => "-r", :default => nil, :desc => "New file extension"
-  def example
-    puts "I'm a thor task!"
+class BulkRenameCLI < Thor
+  desc "extension <folder> <old> <new>", "Rename file extensions in designated folder"
+  method_option :overwrite, :aliases => "-o", :default => nil, :desc => "Overwrite any existing files"
+  method_option :prompt_overwrite, :aliases => "-p", :default => nil, :desc => "Prompt before overwriting any existing file"
+  method_option :copy_files, :aliases => "-c", :default => nil, :desc => "Copy files to new folder"
+  def extension
+    puts "Rename files by replacing the file extension"
   end
 
 end
 
-Test.start
+BulkRenameCLI.start

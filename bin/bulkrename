@@ -16,7 +16,7 @@ end
 folder = ARGV[0]
 find_type = ARGV[1]
 replace_type = ARGV[2]
-abort("Error: Missing folder '" + folder + "'") unless File.exists?(folder)
+abort("Error: Folder '#{folder}' does not exist") unless File.exists?(folder)
 
 puts "Loading file names from folder: #{folder}"
 puts "Replacing file type #{find_type} with #{replace_type}"
@@ -30,7 +30,7 @@ Dir.foreach(folder) do |file_name|
    new_name = file_with_path(folder, base_name) + "." + replace_type
    puts "Renaming #{old_name} to #{new_name}"
    if (File.exists?(new_name))
-     abort("Error: Cannot overwrite '" + new_name + "'")
+     abort("Error: Cannot overwrite file '#{new_name}'")
    end
    File.rename(old_name, new_name)
  end

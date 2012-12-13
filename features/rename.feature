@@ -41,7 +41,7 @@ Feature: Test script using Aruba
     Then the exit status should be 1
     And the output should contain:
     """
-    Error: Missing folder 'missingfolder'
+    Error: Folder 'missingfolder' does not exist
     """
 
   Scenario: Do not overwrite existing file
@@ -51,7 +51,7 @@ Feature: Test script using Aruba
     And the output should contain:
     """
     Renaming photos/d.jpeg to photos/d.jpg
-    Error: Cannot overwrite 'photos/d.jpg'
+    Error: Cannot overwrite file 'photos/d.jpg'
     """
 
   # Need better way to test that the overwrite actually happened

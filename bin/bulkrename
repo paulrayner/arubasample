@@ -30,21 +30,19 @@ def do_overwrite(rename_info, new_name)
   overwrite = false
   if rename_info.overwrite
     overwrite = true
-    puts "Overwrite switch set"
   end
   if rename_info.askoverwrite
     print "File '#{new_name}' already exists, do you want to overwrite it (y/n)?"
     input = STDIN.gets.strip
-    puts "User entered: " + input
     overwrite = true if input[0].downcase == 'y'
   end
+
   puts "Overwriting file '#{new_name}'" if overwrite == true
   overwrite
 end
 
 def do_rename(rename_info, new_name)
   return true if not File.exists?(new_name)
-  puts "file exists"
   return true if (File.exists?(new_name) && do_overwrite(rename_info, new_name))
 end
 

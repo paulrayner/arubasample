@@ -86,9 +86,10 @@ def get_rename_info(arguments)
   replace_type = arguments[2]
   if arguments[3]
     option = arguments[3] 
-    abort "Error: Not valid option" if not option[0..1] == "--"
+    abort "Error: Invalid option '#{option}'" unless option[0..1] == "--"
     overwrite = option == "--overwrite"
-    askoverwrite = true if option == "--askoverwrite"
+    askoverwrite = option == "--askoverwrite"
+    abort "Error: Invalid option name '#{option}'" unless overwrite || askoverwrite
   end
 
   abort("Error: <find_extension> is required") if not find_type 

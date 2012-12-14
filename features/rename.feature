@@ -39,7 +39,15 @@ Feature: Test script using Aruba
     Then the exit status should be 1
     And the output should contain:
     """
-    Error: Not valid option
+    Error: Invalid option 'extra'
+    """
+
+  Scenario: Invalid option name
+    When I run `bulkrename photos jpeg jpg --option`
+    Then the exit status should be 1
+    And the output should contain:
+    """
+    Error: Invalid option name '--option'
     """
 
   Scenario: Must not allow too many arguments

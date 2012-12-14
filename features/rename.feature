@@ -15,7 +15,7 @@ Feature: Test script using Aruba
     Then the exit status should be 0
     And the output should contain:
     """
-    USAGE: bulkrename <folder name> <find_extension> <replace_extension>
+    USAGE: bulkrename <folder name> <find_extension> <replace_extension> [--overwrite|askoverwrite]
     """
 
   Scenario: Must include extension to find
@@ -77,14 +77,15 @@ Feature: Test script using Aruba
   Scenario: Do not overwrite existing file
     Given an empty file named "photos/d.jpeg"
     When I run `bulkrename photos jpeg jpg`
-    Then the exit status should be 1
-    And the output should contain:
+    Then the exit status should be 0
+    And the following files should exist:
+      | photos/d.jpeg |
+    And the output should not contain:
     """
     Renaming photos/d.jpeg to photos/d.jpg
-    Error: Cannot overwrite file 'photos/d.jpg'
+    Overwriting file 'photos/d.jpg'
     """
 
-  @ignore
   Scenario: Provide option to overwrite existing file(s)
     Given an empty file named "photos/d.jpeg"
     When I run `bulkrename photos jpeg jpg --overwrite`
@@ -93,6 +94,10 @@ Feature: Test script using Aruba
       | photos/b.jpg |
       | photos/c.jpg |
       | photos/d.jpg |
+    And the output should contain:
+    """
+    Overwriting file 'photos/d.jpg'
+    """
     And the output should not contain:
     """
     Error: Cannot overwrite file 'photos/d.jpg'
@@ -100,24 +105,20 @@ Feature: Test script using Aruba
 
 
   # Need to change this to interactive mode when it finds the file
-  @ignore
   Scenario: Provide option to decide whether to overwrite existing file(s)
     Given an empty file named "photos/d.jpeg"
-    When I run `bulkrename photos jpeg jpg --askoverwrite`
+    When I run `bulkrename photos jpeg jpg --askoverwrite` interactively
+    And I type "yes"
     Then the following files should exist:
       | photos/a.jpg |
       | photos/b.jpg |
       | photos/c.jpg |
       | photos/d.jpg |
+    And the output should contain:
+    """
+    Overwriting file 'photos/d.jpg'
+    """
     And the output should not contain:
     """
     Error: Cannot overwrite file 'photos/d.jpg'
     """
-# Potential Refactorings:
-#
-# * add output messages displaying which files were renamed
-# * Handle missing folder
-# * Handle copying files to a new folder rather than renaming them in-place
-# * Pattern replace?
-# * Query user to overwrite file or not
-# * Overwrite file switch

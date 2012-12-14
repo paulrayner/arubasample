@@ -26,13 +26,36 @@ def replace_ending(rename_info, file_name)
   return "#{base_name}.#{rename_info.replace_type}"
 end
 
+def do_overwrite(rename_info, new_name)
+  overwrite = false
+  if rename_info.overwrite
+    overwrite = true
+    puts "Overwrite switch set"
+  end
+  if rename_info.askoverwrite
+    print "File '#{new_name}' already exists, do you want to overwrite it (y/n)?"
+    input = STDIN.gets.strip
+    puts "User entered: " + input
+    overwrite = true if input[0].downcase == 'y'
+  end
+  puts "Overwriting file '#{new_name}'" if overwrite == true
+  overwrite
+end
+
+def do_rename(rename_info, new_name)
+  return true if not File.exists?(new_name)
+  puts "file exists"
+  return true if (File.exists?(new_name) && do_overwrite(rename_info, new_name))
+end
+
 def rename_file(rename_info, file_name)
   old_name = "#{rename_info.folder}/#{file_name}"
   new_name = "#{rename_info.folder}/" + replace_ending(rename_info, file_name)
-	puts "Renaming #{old_name} to #{new_name}"
 
-	abort("Error: Cannot overwrite file '#{new_name}'") if File.exists?(new_name) && rename_info.overwrite != true
-	File.rename(old_name, new_name)
+  if do_rename(rename_info, new_name)
+    puts "Renaming #{old_name} to #{new_name}"
+    File.rename(old_name, new_name)
+  end
 end
 
 def display_messages(rename_info)
@@ -53,7 +76,7 @@ end
 
 def get_rename_info(arguments)
   if(arguments.size == 0) then
-      puts 'USAGE: bulkrename <folder name> <find_extension> <replace_extension>'
+      puts 'USAGE: bulkrename <folder name> <find_extension> <replace_extension> [--overwrite|askoverwrite]'
       exit
   end
   abort 'Error: Too many arguments' if (arguments.size > 4)

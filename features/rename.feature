@@ -1,7 +1,7 @@
-Feature: Test script using Aruba
-  In order to develop some kind of command line script using Aruba
-  As a newcomer to Aruba
-  I want to confirm that the script does the right thing
+Feature: Bulk Rename Command Line Utility
+  In order to perform bulk renames of files
+  As a newcomer to Cucumber
+  I want to be able to rename multiple files in a folder by file extension
 
   Background:
     Given an empty file named "photos/a.jpeg"

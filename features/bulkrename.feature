@@ -13,3 +13,12 @@ Feature: Bulk Rename Command Line Utility
 		| photos/a.jpg |
 		| photos/b.jpg |
 		| photos/c.jpg |
+
+  @wip
+  Scenario: Default script output is correct
+    When I run `bulkrename`
+    Then the exit status should be 0
+    And the output should contain:
+    """
+    USAGE: bulkrename <folder name> <find_extension> <replace_extension>
+    """

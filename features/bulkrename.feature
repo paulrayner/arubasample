@@ -1,3 +1,4 @@
+@announce
 Feature: Bulk Rename Command Line Utility
   In order to perform bulk renames of files
   As a newcomer to Cucumber

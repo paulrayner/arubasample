@@ -1,3 +1,15 @@
 #!/usr/bin/env ruby
 $: << File.expand_path("../lib/", __FILE__)
 
+folder = ARGV[0]
+find_type = ARGV[1]
+replace_type = ARGV[2]
+
+Dir.foreach(folder) do |file_name|
+ type = File.extname(file_name).gsub(/^\./, '').downcase 
+ if(type == find_type.downcase)
+   old_name = folder + "/" + file_name
+   new_name = folder + "/" + File.basename(file_name, ".#{type}") + "." + replace_type
+   File.rename(old_name, new_name)
+ end
+end

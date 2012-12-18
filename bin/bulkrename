@@ -1,15 +1,42 @@
 #!/usr/bin/env ruby
 $: << File.expand_path("../lib/", __FILE__)
 
+def do_overwrite(ask_overwrite, new_name)
+  overwrite = false
+  if ask_overwrite
+    print "File '#{new_name}' already exists, do you want to overwrite it (y/n)?"
+    input = STDIN.gets.strip
+    overwrite = true if input[0].downcase == 'y'
+  end
+
+  puts "Overwriting file '#{new_name}'" if overwrite == true
+  overwrite
+end
+
+def do_rename(ask_overwrite, new_name)
+  return true if not File.exists?(new_name)
+  return true if (File.exists?(new_name) && do_overwrite(ask_overwrite, new_name))
+end
+
+if(ARGV.size == 0) then
+  puts 'USAGE: bulkrename <folder name> <find_extension> <replace_extension>'
+  exit 0
+end
+
 folder = ARGV[0]
 find_type = ARGV[1]
 replace_type = ARGV[2]
+if ARGV[3]
+  ask_overwrite = ARGV[3] == "--askoverwrite"
+end
 
 Dir.foreach(folder) do |file_name|
- type = File.extname(file_name).gsub(/^\./, '').downcase 
- if(type == find_type.downcase)
-   old_name = folder + "/" + file_name
-   new_name = folder + "/" + File.basename(file_name, ".#{type}") + "." + replace_type
-   File.rename(old_name, new_name)
- end
+  type = File.extname(file_name).gsub(/^\./, '').downcase 
+  if(type == find_type.downcase)
+    old_name = folder + "/" + file_name
+    new_name = folder + "/" + File.basename(file_name, ".#{type}") + "." + replace_type
+    if do_rename(ask_overwrite, new_name)
+      File.rename(old_name, new_name)
+    end
+  end
 end

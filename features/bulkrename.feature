@@ -26,6 +26,18 @@ Feature: Bulk Rename Command Line Utility
   Scenario: Provide option to decide whether to overwrite existing file(s)
     Given an empty file named "photos/d.jpeg"
     And an empty file named "photos/d.jpg"
+    When I run `bulkrename photos jpeg jpg`
+    Then the following files should exist:
+      | photos/d.jpeg |
+      | photos/d.jpg  |
+    And the output should not contain:
+    """
+    Overwriting file 'photos/d.jpg'
+    """
+
+  Scenario: Provide option to decide whether to overwrite existing file(s)
+    Given an empty file named "photos/d.jpeg"
+    And an empty file named "photos/d.jpg"
     When I run `bulkrename photos jpeg jpg --askoverwrite` interactively
     And I type "yes"
     Then the following files should exist:

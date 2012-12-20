@@ -1,4 +1,3 @@
-@announce
 Feature: Bulk Rename Command Line Utility
   In order to perform bulk renames of files
   As a newcomer to Cucumber
@@ -22,11 +21,28 @@ Feature: Bulk Rename Command Line Utility
     USAGE: bulkrename <folder name> <find_extension> <replace_extension>
     """
 
-  @wip
-  Scenario: Provide option to decide whether to overwrite existing file(s)
+  Scenario: Do not overwrite existing file(s)
     Given an empty file named "photos/d.jpeg"
     And an empty file named "photos/d.jpg"
     When I run `bulkrename photos jpeg jpg`
+    Then the following files should exist:
+      | photos/d.jpeg |
+      | photos/d.jpg  |
+
+  Scenario: Choose to overwrite an existing file
+    Given an empty file named "photos/d.jpeg"
+    And an empty file named "photos/d.jpg"
+    When I run `bulkrename photos jpeg jpg --askoverwrite`
+    Then the output should contain:
+    """
+    File 'photos/d.jpg' already exists, do you want to overwrite it (y/n)?
+    """
+
+  Scenario: Choose not to overwrite an existing file
+    Given an empty file named "photos/d.jpeg"
+    And an empty file named "photos/d.jpg"
+    When I run `bulkrename photos jpeg jpg --askoverwrite` interactively
+    And I type "no"
     Then the following files should exist:
       | photos/d.jpeg |
       | photos/d.jpg  |
@@ -35,7 +51,8 @@ Feature: Bulk Rename Command Line Utility
     Overwriting file 'photos/d.jpg'
     """
 
-  Scenario: Provide option to decide whether to overwrite existing file(s)
+
+  Scenario: Choose to overwrite an existing file
     Given an empty file named "photos/d.jpeg"
     And an empty file named "photos/d.jpg"
     When I run `bulkrename photos jpeg jpg --askoverwrite` interactively
@@ -46,7 +63,16 @@ Feature: Bulk Rename Command Line Utility
     """
     Overwriting file 'photos/d.jpg'
     """
+
+  Scenario: Choose not to overwrite an existing file
+    Given an empty file named "photos/d.jpeg"
+    And an empty file named "photos/d.jpg"
+    When I run `bulkrename photos jpeg jpg --askoverwrite` interactively
+    And I type "no"
+    Then the following files should exist:
+      | photos/d.jpeg |
+      | photos/d.jpg  |
     And the output should not contain:
     """
-    Error: Cannot overwrite file 'photos/d.jpg'
+    Overwriting file 'photos/d.jpg'
     """

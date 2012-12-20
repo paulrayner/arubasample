@@ -29,7 +29,6 @@ Feature: Bulk Rename Command Line Utility
       | photos/d.jpeg |
       | photos/d.jpg  |
 
-  @wip
   Scenario: Detect an existing file
     Given an empty file named "photos/d.jpeg"
     And an empty file named "photos/d.jpg"
@@ -39,6 +38,7 @@ Feature: Bulk Rename Command Line Utility
     File 'photos/d.jpg' already exists, do you want to overwrite it (y/n)?
     """
 
+  @wip
   Scenario: Choose not to overwrite an existing file
     Given an empty file named "photos/d.jpeg"
     And an empty file named "photos/d.jpg"
@@ -47,6 +47,10 @@ Feature: Bulk Rename Command Line Utility
     Then the following files should exist:
       | photos/d.jpeg |
       | photos/d.jpg  |
+    And the output should contain:
+    """
+    File 'photos/d.jpg' already exists, do you want to overwrite it (y/n)?
+    """
     And the output should not contain:
     """
     Overwriting file 'photos/d.jpg'

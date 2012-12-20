@@ -29,7 +29,8 @@ Feature: Bulk Rename Command Line Utility
       | photos/d.jpeg |
       | photos/d.jpg  |
 
-  Scenario: Choose to overwrite an existing file
+  @wip
+  Scenario: Detect an existing file
     Given an empty file named "photos/d.jpeg"
     And an empty file named "photos/d.jpg"
     When I run `bulkrename photos jpeg jpg --askoverwrite`

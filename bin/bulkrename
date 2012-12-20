@@ -5,11 +5,7 @@ def do_overwrite(ask_overwrite, new_name)
   overwrite = false
   if ask_overwrite
     print "File '#{new_name}' already exists, do you want to overwrite it (y/n)?"
-    input = STDIN.gets.strip
-    overwrite = true if input[0].downcase == 'y'
   end
-
-  puts "Overwriting file '#{new_name}'" if overwrite == true
   overwrite
 end
 
@@ -35,8 +31,10 @@ Dir.foreach(folder) do |file_name|
   if(type == find_type.downcase)
     old_name = folder + "/" + file_name
     new_name = folder + "/" + File.basename(file_name, ".#{type}") + "." + replace_type
-    if do_rename(ask_overwrite, new_name)
-      File.rename(old_name, new_name)
+    if File.exists?(new_name) && ask_overwrite
+      print "File '#{new_name}' already exists, do you want to overwrite it (y/n)?"
     end
+
+    File.rename(old_name, new_name)
   end
 end

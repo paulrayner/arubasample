@@ -1,3 +1,4 @@
+@announce
 Feature: Bulk Rename Command Line Utility
   In order to perform bulk renames of files
   As a newcomer to Cucumber
@@ -33,7 +34,6 @@ Feature: Bulk Rename Command Line Utility
     | textfiles/June-financials.csv |
     | textfiles/July-financials.csv |
 
-  @wip
   Scenario: Default script output is correct
     When I run `bulkrename`
     Then the exit status should be 0
@@ -41,7 +41,6 @@ Feature: Bulk Rename Command Line Utility
     """
     USAGE: bulkrename <folder name> <find extension> <replace extension>
     """
-
 
   Scenario: Do not overwrite existing file(s)
     Given an empty file named "photos/d.jpeg"

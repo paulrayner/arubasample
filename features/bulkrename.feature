@@ -1,4 +1,3 @@
-@announce
 Feature: Bulk Rename Command Line Utility
   In order to perform bulk renames of files
   As a newcomer to Cucumber
@@ -35,6 +34,23 @@ Feature: Bulk Rename Command Line Utility
     | textfiles/July-financials.csv |
 
   @wip
+  Scenario Outline: Parameters should be present and valid
+    Given an empty file named "photos/doc1.txt"
+    When I run `bulkrename <arguments>`
+    Then the program should exit by displaying the error:
+    """
+    Error: <message>
+    """
+
+  Examples:
+    | arguments                            | message                           |  
+    | photos jpeg jpg --askoverwrite extra | Too many arguments                |  
+    | documents txt md                     | Folder 'documents' does not exist |  
+    | photos                               | <find extension> is required      |  
+    | photos txt                           | <replace extension> is required   |  
+    | photos txt md extra                  | Invalid option format 'extra'     |  
+    | photos jpeg jpg --verbose            | Invalid option name '--verbose'   |  
+
   Scenario: Default script output is correct
     When I run `bulkrename`
     Then the correct usage message should be displayed:
@@ -88,4 +104,11 @@ Feature: Bulk Rename Command Line Utility
     Then the program should exit by displaying the error:
     """
     Error: Too many arguments
+    """
+
+  Scenario: Folder must exist
+    When I run `bulkrename photos jpeg jpg`
+    Then the program should exit by displaying the error:
+    """
+    Error: Folder 'photos' does not exist
     """

@@ -34,10 +34,10 @@ Feature: Bulk Rename Command Line Utility
     | textfiles/June-financials.csv |
     | textfiles/July-financials.csv |
 
+  @wip
   Scenario: Default script output is correct
     When I run `bulkrename`
-    Then the exit status should be 0
-    And the correct usage message should be displayed:
+    Then the correct usage message should be displayed:
     """
     USAGE: bulkrename <folder name> <find extension> <replace extension>
     """
@@ -81,4 +81,11 @@ Feature: Bulk Rename Command Line Utility
     But the output should not contain:
     """
     Overwriting file 'photos/d.jpg'
+    """
+
+  Scenario: Must not allow too many arguments
+    When I run `bulkrename photos jpeg jpg --askoverwrite extra`
+    Then the program should exit by displaying the error:
+    """
+    Error: Too many arguments
     """

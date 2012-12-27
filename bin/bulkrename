@@ -19,9 +19,10 @@ def do_rename(ask_overwrite, new_name)
 end
 
 if ARGV.size == 0
-  puts 'USAGE: bulkrename <folder name> <find extension> <replace extension>'
+  puts 'USAGE: bulkrename <folder name> <find extension> <replace extension> [--askoverwrite]'
   exit 0
 end
+abort 'Error: Too many arguments' if ARGV.size > 4
 
 folder = ARGV[0]
 find_type = ARGV[1]

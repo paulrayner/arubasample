@@ -39,7 +39,7 @@ Feature: Bulk Rename Command Line Utility
     When I run `bulkrename`
     Then the correct usage message should be displayed:
     """
-    USAGE: bulkrename <folder name> <find extension> <replace extension>
+    USAGE: bulkrename <folder name> <find extension> <replace extension> [--askoverwrite]
     """
 
   Scenario: Do not overwrite existing file(s)

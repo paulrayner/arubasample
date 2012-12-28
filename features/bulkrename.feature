@@ -1,3 +1,4 @@
+@announce
 Feature: Bulk Rename Command Line Utility
   In order to perform bulk renames of files
   As a newcomer to Cucumber
@@ -33,7 +34,6 @@ Feature: Bulk Rename Command Line Utility
     | textfiles/June-financials.csv |
     | textfiles/July-financials.csv |
 
-  @wip
   Scenario Outline: Parameters should be present and valid
     Given an empty file named "photos/doc1.txt"
     When I run `bulkrename <arguments>`
@@ -112,3 +112,21 @@ Feature: Bulk Rename Command Line Utility
     """
     Error: Folder 'photos' does not exist
     """
+
+  Scenario: Rename files in specified folder
+    Given some text files
+    When I run `bulkrename textfiles txt csv`
+    Then the files should be renamed correctly
+
+  @wip
+  Scenario: Rename files in specified folder
+    Given the following files in the folder "textfiles":
+    | May-financials.txt  |  
+    | June-financials.TXT |  
+    | July-financials.TXT |  
+    When I run `bulkrename textfiles txt csv`
+    Then the following files should exist:
+    | textfiles/May-financials.csv |
+    | textfiles/June-financials.csv |
+    | textfiles/July-financials.csv |
+

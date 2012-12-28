@@ -25,10 +25,8 @@ Then /^the files should be renamed correctly$/ do
 end
 
 Given /^the following files in the folder "(.*?)":$/ do |folder, files_table|
-  files_table.hashes.each do |hash|
-  	pp "** #{files_table} **"
-  	new_file = "#{folder}/#{hash['link']}"
-  	puts new_file
-    step "an empty file named \"#{new_file}\""
+    files_table.raw.flatten.map do |file|
+    	new_file = "#{folder}/#{file}"
+    	step "an empty file named \"#{new_file}\""
   end
 end

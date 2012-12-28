@@ -118,7 +118,6 @@ Feature: Bulk Rename Command Line Utility
     When I run `bulkrename textfiles txt csv`
     Then the files should be renamed correctly
 
-  @wip
   Scenario: Rename files in specified folder
     Given the following files in the folder "textfiles":
     | May-financials.txt  |  
@@ -129,4 +128,16 @@ Feature: Bulk Rename Command Line Utility
     | textfiles/May-financials.csv |
     | textfiles/June-financials.csv |
     | textfiles/July-financials.csv |
+
+  @wip
+  Scenario: Rename files in specified folder
+    Given the following files in the "textfiles" folder:
+    | May-financials.txt  |  
+    | June-financials.TXT |  
+    | July-financials.TXT |  
+    When I run `bulkrename textfiles txt csv`
+    Then the following files should exist in the "textfiles" folder:
+    | May-financials.csv  |  
+    | June-financials.csv |  
+    | July-financials.csv |  
 

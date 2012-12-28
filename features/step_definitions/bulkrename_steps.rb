@@ -24,9 +24,10 @@ Then /^the files should be renamed correctly$/ do
   })
 end
 
-Given /^the following files in the folder "(.*?)":$/ do |folder, files_table|
-    files_table.raw.flatten.map do |file|
-    	new_file = "#{folder}/#{file}"
-    	step "an empty file named \"#{new_file}\""
-  end
+Given /^the following files in the "(.*?)" folder:$/ do |folder, files|
+ 	files.raw.map {|file| write_file(File.join(folder, file), "")}
+end
+
+Then /^the following files should exist in the "(.*?)" folder:$/ do |folder, files|
+ 	check_file_presence(files.raw.map{|file_row| File.join(folder, file_row[0])}, true)
 end

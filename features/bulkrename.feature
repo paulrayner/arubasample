@@ -5,34 +5,37 @@ Feature: Bulk Rename Command Line Utility
   I want to be able to rename multiple files in a folder by file extension
 
   Scenario: Rename files in specified folder by extension
-    Given an empty file named "photos/a.jpeg"
-    And an empty file named "photos/b.jpeg"
-    And an empty file named "photos/c.jpeg"
+    Given the following files in the "photos" folder:
+    | a.jpeg |  
+    | b.jpeg |  
+    | c.jpeg |  
     When I run `bulkrename photos jpeg jpg`
-    Then the following files should exist:
-		| photos/a.jpg |
-		| photos/b.jpg |
-		| photos/c.jpg |
+    Then the following files should exist in the "photos" folder:
+		| a.jpg |
+		| b.jpg |
+		| c.jpg |
 
   Scenario: Rename files in specified folder with extension to completely new file type
-    Given an empty file named "textfiles/doc1.txt"
-    And an empty file named "textfiles/doc2.txt"
-    And an empty file named "textfiles/doc3.txt"
+    Given the following files in the "textfiles" folder:
+    | doc1.txt |  
+    | doc2.txt |  
+    | doc3.txt |  
     When I run `bulkrename textfiles txt md`
-    Then the following files should exist:
-    | textfiles/doc1.md |
-    | textfiles/doc2.md |
-    | textfiles/doc3.md |
+    Then the following files should exist in the "textfiles" folder:
+    | doc1.md |
+    | doc2.md |
+    | doc3.md |
 
   Scenario: Rename files in specified folder by extension ignoring case
-    Given an empty file named "textfiles/May-financials.txt"
-    And an empty file named "textfiles/June-financials.TXT"
-    And an empty file named "textfiles/July-financials.TXT"
+    Given the following files in the "textfiles" folder:
+    | May-financials.txt  |  
+    | June-financials.TXT |  
+    | July-financials.TXT |  
     When I run `bulkrename textfiles txt csv`
-    Then the following files should exist:
-    | textfiles/May-financials.csv |
-    | textfiles/June-financials.csv |
-    | textfiles/July-financials.csv |
+    Then the following files should exist in the "textfiles" folder:
+    | May-financials.csv  |  
+    | June-financials.csv |  
+    | July-financials.csv |  
 
   Scenario Outline: Parameters should be present and valid
     Given an empty file named "photos/doc1.txt"
@@ -59,37 +62,40 @@ Feature: Bulk Rename Command Line Utility
     """
 
   Scenario: Do not overwrite existing file(s)
-    Given an empty file named "photos/d.jpeg"
-    And an empty file named "photos/d.jpg"
+    Given the following files in the "photos" folder:
+    | d.jpeg |  
+    | d.jpg  |  
     When I run `bulkrename photos jpeg jpg`
-    Then the following files should exist:
-      | photos/d.jpeg |
-      | photos/d.jpg  |
+    Then the following files should exist in the "photos" folder:
+    | d.jpeg |  
+    | d.jpg  |  
 
   Scenario: Choose to overwrite an existing file
-    Given an empty file named "photos/d.jpeg"
-      And an empty file named "photos/d.jpg"
-      When I run `bulkrename photos jpeg jpg --askoverwrite` interactively
-      And I type "yes"
-      Then the following files should exist:
-        | photos/d.jpg |
-      And the output should contain:
-      """
-      File 'photos/d.jpg' already exists, do you want to overwrite it (y/n)?
-      """
-      And the output should contain:
-      """
-      Overwriting file 'photos/d.jpg'
-      """
+    Given the following files in the "photos" folder:
+    | d.jpeg |  
+    | d.jpg  |  
+    When I run `bulkrename photos jpeg jpg --askoverwrite` interactively
+    And I type "yes"
+    Then the following files should exist in the "photos" folder:
+    | d.jpg |
+    And the output should contain:
+    """
+    File 'photos/d.jpg' already exists, do you want to overwrite it (y/n)?
+    """
+    And the output should contain:
+    """
+    Overwriting file 'photos/d.jpg'
+    """
 
   Scenario: Choose not to overwrite an existing file
-    Given an empty file named "photos/d.jpeg"
-    And an empty file named "photos/d.jpg"
+    Given the following files in the "photos" folder:
+    | d.jpeg |  
+    | d.jpg  | 
     When I run `bulkrename photos jpeg jpg --askoverwrite` interactively
     And I type "no"
-    Then the following files should exist:
-      | photos/d.jpeg |
-      | photos/d.jpg  |
+    Then the following files should exist in the "photos" folder:
+    | d.jpeg |
+    | d.jpg  |
     And the output should contain:
     """
     File 'photos/d.jpg' already exists, do you want to overwrite it (y/n)?
@@ -98,46 +104,4 @@ Feature: Bulk Rename Command Line Utility
     """
     Overwriting file 'photos/d.jpg'
     """
-
-  Scenario: Must not allow too many arguments
-    When I run `bulkrename photos jpeg jpg --askoverwrite extra`
-    Then the program should exit by displaying the error:
-    """
-    Error: Too many arguments
-    """
-
-  Scenario: Folder must exist
-    When I run `bulkrename photos jpeg jpg`
-    Then the program should exit by displaying the error:
-    """
-    Error: Folder 'photos' does not exist
-    """
-
-  Scenario: Rename files in specified folder
-    Given some text files
-    When I run `bulkrename textfiles txt csv`
-    Then the files should be renamed correctly
-
-  Scenario: Rename files in specified folder
-    Given the following files in the folder "textfiles":
-    | May-financials.txt  |  
-    | June-financials.TXT |  
-    | July-financials.TXT |  
-    When I run `bulkrename textfiles txt csv`
-    Then the following files should exist:
-    | textfiles/May-financials.csv |
-    | textfiles/June-financials.csv |
-    | textfiles/July-financials.csv |
-
-  @wip
-  Scenario: Rename files in specified folder
-    Given the following files in the "textfiles" folder:
-    | May-financials.txt  |  
-    | June-financials.TXT |  
-    | July-financials.TXT |  
-    When I run `bulkrename textfiles txt csv`
-    Then the following files should exist in the "textfiles" folder:
-    | May-financials.csv  |  
-    | June-financials.csv |  
-    | July-financials.csv |  
 

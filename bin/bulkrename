@@ -41,8 +41,8 @@ abort("Error: Folder '#{folder}' does not exist") unless File.exists?(folder)
 Dir.foreach(folder) do |file_name|
   type = File.extname(file_name).gsub(/^\./, '') 
   if type.downcase == find_type.downcase
-    old_name = "#{folder}/" + file_name
-    new_name = "#{folder}/" + File.basename(file_name, ".#{type}") + ".#{replace_type}"
+    old_name = File.join(folder, file_name)
+    new_name = File.join(folder, File.basename(file_name, ".#{type}") + ".#{replace_type}")
     if do_rename(ask_overwrite, new_name)
       File.rename(old_name, new_name)
     end
